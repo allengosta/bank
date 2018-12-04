@@ -81,7 +81,7 @@ def view():
 def view_pzn():
     conn = sqlite3.connect("bank.db")
     cur = conn.cursor()
-    cur.execute("SELECT p.name from pzn_tb p")
+    cur.execute("SELECT p.name, p.pzn from pzn_tb p")
     rows = cur.fetchall()
     conn.close()
     return rows

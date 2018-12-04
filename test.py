@@ -87,29 +87,31 @@ def get_selected_row(event):
     except IndexError:
         pass
 
-
+dt = {}
 def view_command():
     list1.delete(0, END)
     for row in backend.view():
         list1.insert(END, row)
-    e2.delete(0, END)
+    '''e2.delete(0, END)
     for row in backend.view_pzn():
-        e2.insert(END, row)
+        e2.insert(0, row[0])
+        dt['pzn'] = row[1]
+        dt['pzn_name'] = row[0]'''
 
 
 def search_command():
     list1.delete(0, END)
-    for row in backend.search(newnum_text.get(), e2.get(e2.curselection()), rgn_text.get()):
+    for row in backend.search(newnum_text.get(), pzn_text.get(), rgn_text.get()):
         list1.insert(END, row)
 
 
 def add_command():
-    backend.insert(real_text.get(), e2.get(e2.curselection()), uer_text.get(), rgn_text.get(), ind_text.get(),
+    backend.insert(real_text.get(), pzn_text.get(), uer_text.get(), rgn_text.get(), ind_text.get(),
                    tnp_text.get(), nnp_text.get(), adr_text.get(), rkc_text.get(), namep_text.get(), newnum_text.get(),
                    telef_text.get(), regn_text.get(), okpo_text.get(), dt_izm_text.get(), ksnp_text.get(),
                    date_in_text.get(), date_ch_text.get())
     list1.delete(0, END)
-    list1.insert(END, (real_text.get(), e2.get(e2.curselection()), uer_text.get(), rgn_text.get(), ind_text.get(),
+    list1.insert(END, (real_text.get(), pzn_text.get(), uer_text.get(), rgn_text.get(), ind_text.get(),
                    tnp_text.get(), nnp_text.get(), adr_text.get(), rkc_text.get(), namep_text.get(), newnum_text.get(),
                    telef_text.get(), regn_text.get(), okpo_text.get(), dt_izm_text.get(), ksnp_text.get(),
                    date_in_text.get(), date_ch_text.get()))
@@ -121,10 +123,10 @@ def delete_command():
 
 
 def update_command():
-    backend.update(real_text.get(), e2.get(e2.curselection()), uer_text.get(), rgn_text.get(), ind_text.get(),
-                   tnp_text.get(), nnp_text.get(), adr_text.get(), rkc_text.get(), namep_text.get(),
-                   telef_text.get(), regn_text.get(), okpo_text.get(), dt_izm_text.get(), ksnp_text.get(),
-                   date_in_text.get(), date_ch_text.get(), newnum_text.get())
+    backend.update(real_text.get(), pzn_text.get(), uer_text.get(), rgn_text.get(), ind_text.get(),
+                       tnp_text.get(), nnp_text.get(), adr_text.get(), rkc_text.get(), namep_text.get(),
+                       telef_text.get(), regn_text.get(), okpo_text.get(), dt_izm_text.get(), ksnp_text.get(),
+                       date_in_text.get(), date_ch_text.get(), newnum_text.get())
     view_command()
 
 
@@ -189,14 +191,14 @@ real_text = StringVar()
 e1 = Entry(window, textvariable=real_text)
 e1.grid(row=0, column=1)
 
-# pzn_text = StringVar()
-# e2 = Entry(window, textvariable=pzn_text)
-# e2.grid(row=0, column=3)
-
-e2 = Listbox(window, height=6, width=25)
+pzn_text = StringVar()
+e2 = Entry(window, textvariable=pzn_text)
 e2.grid(row=0, column=3)
 
-e2.bind('<<ListboxSelect>>', get_selected_row)
+'''e2 = Listbox(window, height=6, width=25)
+e2.grid(row=0, column=3)
+
+e2.bind('<<ListboxSelect>>', get_selected_row)'''
 
 uer_text = StringVar()
 e3 = Entry(window, textvariable=uer_text)
