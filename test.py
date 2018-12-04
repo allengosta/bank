@@ -42,7 +42,7 @@ from tkinter import *
 import backend
 
 
-def get_selected_row(event):  # the "event" parameter is needed b/c we've binded this function to the listbox
+def get_selected_row(event):
     try:
         index = list1.curselection()[0]
         global selected_tuple
@@ -85,28 +85,31 @@ def get_selected_row(event):  # the "event" parameter is needed b/c we've binded
         e18.delete(0, END)
         e18.insert(END, selected_tuple[17])
     except IndexError:
-        pass  # in the case where the listbox is empty, the code will not execute
+        pass
 
 
 def view_command():
-    list1.delete(0, END)  # make sure we've cleared all entries in the listbox every time we press the View all button
+    list1.delete(0, END)
     for row in backend.view():
         list1.insert(END, row)
+    e2.delete(0, END)
+    for row in backend.view_pzn():
+        e2.insert(END, row)
 
 
 def search_command():
     list1.delete(0, END)
-    for row in backend.search(newnum_text.get(), pzn_text.get(), rgn_text.get()):
+    for row in backend.search(newnum_text.get(), e2.get(e2.curselection()), rgn_text.get()):
         list1.insert(END, row)
 
 
 def add_command():
-    backend.insert(real_text.get(), pzn_text.get(), uer_text.get(), rgn_text.get(), ind_text.get(),
+    backend.insert(real_text.get(), e2.get(e2.curselection()), uer_text.get(), rgn_text.get(), ind_text.get(),
                    tnp_text.get(), nnp_text.get(), adr_text.get(), rkc_text.get(), namep_text.get(), newnum_text.get(),
                    telef_text.get(), regn_text.get(), okpo_text.get(), dt_izm_text.get(), ksnp_text.get(),
                    date_in_text.get(), date_ch_text.get())
     list1.delete(0, END)
-    list1.insert(END, (real_text.get(), pzn_text.get(), uer_text.get(), rgn_text.get(), ind_text.get(),
+    list1.insert(END, (real_text.get(), e2.get(e2.curselection()), uer_text.get(), rgn_text.get(), ind_text.get(),
                    tnp_text.get(), nnp_text.get(), adr_text.get(), rkc_text.get(), namep_text.get(), newnum_text.get(),
                    telef_text.get(), regn_text.get(), okpo_text.get(), dt_izm_text.get(), ksnp_text.get(),
                    date_in_text.get(), date_ch_text.get()))
@@ -118,15 +121,14 @@ def delete_command():
 
 
 def update_command():
-    # be careful for the next line ---> we are updating using the texts in the entries, not the selected tuple
-    backend.update(real_text.get(), pzn_text.get(), uer_text.get(), rgn_text.get(), ind_text.get(),
+    backend.update(real_text.get(), e2.get(e2.curselection()), uer_text.get(), rgn_text.get(), ind_text.get(),
                    tnp_text.get(), nnp_text.get(), adr_text.get(), rkc_text.get(), namep_text.get(),
                    telef_text.get(), regn_text.get(), okpo_text.get(), dt_izm_text.get(), ksnp_text.get(),
                    date_in_text.get(), date_ch_text.get(), newnum_text.get())
     view_command()
 
 
-# code for the GUI (front end)
+# GUI
 window = Tk()
 window.wm_title("Bank Work")
 l1 = Label(window, text="REAL")
@@ -187,9 +189,14 @@ real_text = StringVar()
 e1 = Entry(window, textvariable=real_text)
 e1.grid(row=0, column=1)
 
-pzn_text = StringVar()
-e2 = Entry(window, textvariable=pzn_text)
+# pzn_text = StringVar()
+# e2 = Entry(window, textvariable=pzn_text)
+# e2.grid(row=0, column=3)
+
+e2 = Listbox(window, height=6, width=25)
 e2.grid(row=0, column=3)
+
+e2.bind('<<ListboxSelect>>', get_selected_row)
 
 uer_text = StringVar()
 e3 = Entry(window, textvariable=uer_text)
@@ -260,7 +267,7 @@ list1.grid(row=25, column=0, rowspan=6, columnspan=2)
 
 list1.bind('<<ListboxSelect>>', get_selected_row)
 
-# now we need to attach a scrollbar to the listbox, and the other direction,too
+
 sb1 = Scrollbar(window)
 sb1.grid(row=25, column=2, rowspan=6)
 list1.config(yscrollcommand=sb1.set)

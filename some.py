@@ -23,7 +23,7 @@ def connect():
                 "uer INTEGER, uername TEXT)")
     conn.commit()
     for i in table:
-        cur.execute("INSERT INTO uer_tb VALUES(?,?,?,?)", (i['vkey'], i['uer'],
+        cur.execute("INSERT INTO uer_tb VALUES(?,?,?)", (i['vkey'], i['uer'],
                                                              i['uername']))
         conn.commit()
     conn.close()

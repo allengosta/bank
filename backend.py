@@ -69,7 +69,44 @@ def insert(real, pzn, uer, rgn, ind, tnp, nnp, adr, rkc, namep, telef, regn, okp
 def view():
     conn = sqlite3.connect("bank.db")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM bank")
+    cur.execute("SELECT b.real, p.name, u.uername, r.name, b.ind, t.shortname, b.nnp, b.adr, b.rkc, b.namep, "
+                "b.newnum, b.telef, b.regn, b.okpo, b.dt_izm, b.ksnp, b.date_in, b.date_ch "
+                "FROM bank b join reg_tb r on b.rgn=r.rgn join pzn_tb p on p.pzn=b.pzn "
+                "join tnp_tb t on t.tnp=b.tnp join uer_tb u on u.uer=b.uer")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+
+def view_pzn():
+    conn = sqlite3.connect("bank.db")
+    cur = conn.cursor()
+    cur.execute("SELECT p.name from pzn_tb p")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+def view_reg():
+    conn = sqlite3.connect("bank.db")
+    cur = conn.cursor()
+    cur.execute("SELECT p.name from reg_tb p")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+def view_uer():
+    conn = sqlite3.connect("bank.db")
+    cur = conn.cursor()
+    cur.execute("SELECT p.uername from uer_tb p")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+
+def view_tnp():
+    conn = sqlite3.connect("bank.db")
+    cur = conn.cursor()
+    cur.execute("SELECT p.shortname from tnp_tb p")
     rows = cur.fetchall()
     conn.close()
     return rows
